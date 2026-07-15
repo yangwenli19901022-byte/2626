@@ -215,3 +215,8 @@ nav a.is-active::before {
   .timeline::before { transform: scaleY(1); transition: none; }
   .portrait-card { transform: rotate(2.5deg); transition: none; }
 }
+
+.project-link { display: block; }
+.project-link:focus-visible { outline: 3px solid var(--lime); outline-offset: 8px; }
+.project-link h3 { text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.project-link:hover h3 { text-decoration: underline; }
