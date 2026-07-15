@@ -1,0 +1,217 @@
+/* Gentle editorial motion for the selected-work cards. */
+@keyframes project-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+
+@keyframes project-glint {
+  0%, 18% { transform: translateX(-145%) skewX(-18deg); }
+  52%, 100% { transform: translateX(185%) skewX(-18deg); }
+}
+
+@keyframes arrow-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(5px, -5px); }
+}
+
+@media (hover: hover) and (min-width: 621px) {
+  .project {
+    animation: project-float 6.8s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .project:nth-child(2) { animation-delay: -2.3s; }
+  .project:nth-child(3) { animation-delay: -4.6s; }
+
+  .project-visual {
+    box-shadow: 0 20px 44px #00000022;
+  }
+
+  .project:nth-child(1) .project-visual { box-shadow: 12px 14px 0 #dfff4f, 0 24px 50px #0000003d; }
+  .project:nth-child(2) .project-visual { box-shadow: 12px 14px 0 #176bff, 0 24px 50px #0000003d; }
+  .project:nth-child(3) .project-visual { box-shadow: 12px 14px 0 #f2f5fa, 0 24px 50px #0000003d; }
+
+  .project-visual::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    inset: -15% auto -15% -35%;
+    width: 24%;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, #ffffff35, transparent);
+    animation: project-glint 8.5s ease-in-out infinite;
+  }
+
+  .project:nth-child(2) .project-visual::after { animation-delay: -2.8s; }
+  .project:nth-child(3) .project-visual::after { animation-delay: -5.6s; }
+
+  .visual-arrow {
+    animation: arrow-drift 2.6s ease-in-out infinite;
+  }
+
+  .project:hover {
+    animation-play-state: paused;
+    z-index: 2;
+  }
+
+  .project:hover .project-visual {
+    filter: saturate(1.16) contrast(1.03);
+    transform: translateY(-12px) rotate(.5deg);
+  }
+
+  .project:hover .visual-arrow {
+    animation-play-state: paused;
+    transform: translate(7px, -7px);
+  }
+}
+
+@media (max-width: 620px) {
+  .project-visual {
+    box-shadow: 8px 9px 0 #176bff;
+  }
+
+  .project:nth-child(1) .project-visual { box-shadow: 8px 9px 0 #dfff4f; }
+  .project:nth-child(3) .project-visual { box-shadow: 8px 9px 0 #f2f5fa; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project,
+  .project-visual::after,
+  .visual-arrow {
+    animation: none !important;
+  }
+}
+
+/* Content motion begins after the hero; the first screen stays immediate. */
+.motion-ready .section-heading > *,
+.motion-ready .experience-lead > :not(.section-code),
+.motion-ready .timeline li,
+.motion-ready footer > div {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .75s ease, transform .75s cubic-bezier(.2, .7, .2, 1);
+}
+
+.motion-ready .section-heading.is-visible > *,
+.motion-ready .experience-lead.is-visible > :not(.section-code),
+.motion-ready .timeline li.is-visible,
+.motion-ready footer.is-visible > div {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motion-ready .section-heading.is-visible > :nth-child(2) { transition-delay: .12s; }
+.motion-ready .experience-lead.is-visible > :nth-child(3) { transition-delay: .12s; }
+.motion-ready .experience-lead.is-visible > :nth-child(4) { transition-delay: .2s; }
+.motion-ready .timeline li:nth-child(2) { transition-delay: .1s; }
+.motion-ready .timeline li:nth-child(3) { transition-delay: .2s; }
+.motion-ready footer.is-visible > div:nth-child(2) { transition-delay: .14s; }
+
+.motion-ready .project {
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  transition: opacity .8s ease, clip-path .9s cubic-bezier(.2, .7, .2, 1);
+}
+
+.motion-ready .project.is-visible {
+  opacity: 1;
+  clip-path: inset(-30px -30px -40px -30px);
+}
+
+.motion-ready .project:nth-child(2) { transition-delay: .12s; }
+.motion-ready .project:nth-child(3) { transition-delay: .24s; }
+
+.timeline { position: relative; }
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--blue);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 1.4s cubic-bezier(.2, .7, .2, 1);
+}
+
+.experience.is-visible .timeline::before { transform: scaleY(1); }
+
+nav a::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+nav a.is-active::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.portrait-card {
+  transform:
+    perspective(900px)
+    rotateX(var(--portrait-rx, 0deg))
+    rotateY(var(--portrait-ry, 0deg))
+    translate3d(var(--portrait-x, 0), var(--portrait-y, 0), 0)
+    rotate(2.5deg);
+  transition: transform .18s ease-out, box-shadow .3s ease;
+  will-change: transform;
+}
+
+.portrait-card:hover {
+  box-shadow: 19px 19px 0 var(--blue);
+}
+
+.project-visual .visual-art {
+  --art-x: 0px;
+  --art-y: 0px;
+  transition: transform .22s ease-out;
+  will-change: transform;
+}
+
+.orbit .visual-art { transform: translate3d(var(--art-x), var(--art-y), 0); }
+.frames .visual-art { transform: translate3d(var(--art-x), var(--art-y), 0) rotate(-7deg); }
+.atlas .visual-art { transform: translate3d(var(--art-x), var(--art-y), 0) rotate(45deg); }
+
+@media (max-width: 620px) {
+  .motion-ready .section-heading > *,
+  .motion-ready .experience-lead > :not(.section-code),
+  .motion-ready .timeline li,
+  .motion-ready footer > div {
+    transform: translateY(16px);
+  }
+
+  .motion-ready .section-heading.is-visible > *,
+  .motion-ready .experience-lead.is-visible > :not(.section-code),
+  .motion-ready .timeline li.is-visible,
+  .motion-ready footer.is-visible > div {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ready .section-heading > *,
+  .motion-ready .experience-lead > :not(.section-code),
+  .motion-ready .timeline li,
+  .motion-ready footer > div,
+  .motion-ready .project {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .timeline::before { transform: scaleY(1); transition: none; }
+  .portrait-card { transform: rotate(2.5deg); transition: none; }
+}
